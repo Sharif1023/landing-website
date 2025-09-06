@@ -279,6 +279,138 @@ style="
 
 
 
+<!-- New Section: 70/30 Layout with 3D + Wood Base + Dynamic Shadow -->
+<section id="order" class="relative px-6 md:px-12 py-24 bg-gray-50 bg-cover bg-center"
+style="
+           background-image: url('https://static.vecteezy.com/system/resources/previews/053/826/756/non_2x/a-dark-room-with-a-wall-and-a-tree-in-the-background-free-photo.jpg');
+           background-size: cover;
+           background-position: center;
+           background-repeat: no-repeat;
+         "> 
+
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+
+    <!-- Left Container: Interactive 3D Image (70%) -->
+    <div class="md:w-8/12 w-full perspective-1000 relative flex justify-center items-end">
+      
+      <!-- Wood Base Image -->
+      <img src="image/wood 2.png" 
+     alt="Wood Base"
+     class="absolute bottom-0 w-96 md:w-[28rem] max-w-full z-0 drop-shadow-lg"
+     style="mix-blend-mode: multiply;">
+
+      <!-- Dynamic Shadow -->
+      <div id="dynamic-shadow" 
+           class="absolute bottom-0 w-48 h-12 bg-black/20 rounded-full blur-xl z-5"
+           style="transform-origin: center; transition: all 0.1s;"></div>
+
+      <!-- Main Product Image -->
+      <img id="features-img" 
+           src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png"
+           alt="Nivea Product"
+           class="w-full max-w-sm rounded-2xl  transition-transform duration-50 ease-out relative z-10 cursor-grab">
+    </div>
+
+    <!-- Right Container: Text/Other Content (30%) -->
+    <div class="md:w-4/12 w-full flex flex-col justify-center space-y-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-100">Why Choose NIVEA MEN?</h2>
+      <p class="text-lg text-gray-100">
+        Experience the ultimate skin care solution with deep moisturization, 
+        natural extracts, and long-lasting freshness for all-day protection.
+      </p>
+      <ul class="list-disc list-inside text-gray-100 space-y-2">
+        <li>Hydrates and softens skin</li>
+        <li>Non-greasy & fast absorbing</li>
+        <li>Dermatologically tested</li>
+        <li>Suitable for all skin types</li>
+      </ul>
+      <a href="checkout.html" 
+         class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl btn-hover w-max">
+        Order Now
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.perspective-1000 {
+  perspective: 1000px;
+  perspective-origin: center;
+}
+
+#features-img {
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: grab;
+}
+
+#dynamic-shadow {
+  pointer-events: none;
+}
+</style>
+
+<script>
+const featuresImg = document.getElementById('features-img');
+const container = featuresImg.parentElement;
+const dynamicShadow = document.getElementById('dynamic-shadow');
+let isDragging = false;
+let startX, startY;
+let currentRotX = 0;
+let currentRotY = 0;
+
+const rotationLimit = 45; // degrees
+
+// Drag start
+featuresImg.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
+  featuresImg.style.cursor = 'grabbing';
+});
+
+// Drag end
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  featuresImg.style.cursor = 'grab';
+});
+
+// Dragging
+document.addEventListener('mousemove', (e) => {
+  if(!isDragging) return;
+
+  const deltaX = e.clientX - startX;
+  const deltaY = e.clientY - startY;
+
+  startX = e.clientX;
+  startY = e.clientY;
+
+  currentRotY += deltaX * 0.3;
+  currentRotX -= deltaY * 0.3;
+
+  // Clamp rotation
+  currentRotX = Math.max(Math.min(currentRotX, rotationLimit), -rotationLimit);
+  currentRotY = Math.max(Math.min(currentRotY, rotationLimit), -rotationLimit);
+
+  featuresImg.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg) scale(1.02)`;
+
+  // Dynamic shadow moves opposite to rotation
+  const shadowOffsetX = -currentRotY * 1.5; // multiplier for sensitivity
+  const shadowOffsetY = currentRotX * 1.5;
+  dynamicShadow.style.transform = `translate(${shadowOffsetX}px, ${shadowOffsetY}px) scale(${1 - Math.abs(currentRotX)/150})`;
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 const heroImg = document.getElementById('hero-img');

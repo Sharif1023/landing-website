@@ -1,207 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nivea Men Cream — Cinematic Parallax</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nivea Men Cream — Cinematic Parallax (Smooth)</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  background: #f5f5f5;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  font-family: 'Inter', sans-serif;
-}
-
-/* Cinematic Overlay */
-#hero-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0,0,0,0.25) 70%);
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-/* Hero Image fixed for cinematic merge */
-#hero-img {
-  position: fixed;
-  top: 15%;
-  left: 50%;
-  transform: translateX(-50%) scale(1);
-  width: 250px;
-  max-width: 60vw;
-  z-index: 50;
-  pointer-events: none;
-  transition: box-shadow 0.3s ease;
-}
-
-/* Second section */
-#order {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #fff;
-  padding-top: 150px;
-  padding-bottom: 100px;
-}
-
-#second-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 250px;
-  max-width: 60vw;
-  transform: translate(-50%, -50%) scale(0.95);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-/* Parallax for text */
-.parallax {
-  transform: translateY(0px);
-  transition: transform 0.1s linear;
-}
-
-/* Buttons hover */
-.btn-hover:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  transition: all 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  #hero-img, #second-img {
-    width: 180px;
+  :root{
+    --ease: 0.10;               /* overall smoothing */
+    --shadowMax: 0.28;          /* max shadow opacity */
+    --vignetteMax: 0.70;        /* max cinematic overlay */
   }
-}
 
-/* Animations */
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-.animate-fadeIn {
-  animation: fadeIn 1.5s ease-out forwards;
-}
+  body{
+    margin:0;
+    padding:0;
+    background:#f5f5f5;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  /* Fixed cinematic vignette overlay */
+  #hero-overlay{
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at center,
+        rgba(0,0,0,0.08) 0%,
+        rgba(0,0,0,0.18) 40%,
+        rgba(0,0,0,0.30) 78%,
+        rgba(0,0,0,0.40) 100%);
+    pointer-events:none;
+    z-index:40;
+    opacity:0;
+    transition: opacity .35s ease;
+  }
+
+  /* Fixed hero product */
+  #hero-img{
+    position:fixed;
+    top:15%;
+    left:50%;
+    transform: translateX(-50%) translateY(0px) scale(1);
+    width:250px;
+    max-width:60vw;
+    z-index:60;
+    pointer-events:none;
+    will-change: transform, opacity, filter;
+    filter: drop-shadow(0 14px 32px rgba(0,0,0,.18));
+  }
+
+  /* About section floating image */
+  #second-img{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:250px;
+    max-width:60vw;
+    transform: translate(-50%, -50%) scale(.96);
+    opacity:0;
+    pointer-events:none;
+    will-change: transform, opacity;
+  }
+
+  /* Parallax text */
+  .parallax{
+    will-change: transform;
+    transform: translateY(0px);
+  }
+
+  /* Button hover */
+  .btn-hover{
+    transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+    will-change: transform;
+  }
+  .btn-hover:hover{
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+
+  /* Fade animation */
+  @keyframes fadeIn {
+    0%   { opacity: 0; transform: translateY(-18px) scale(.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .animate-fadeIn{ animation: fadeIn 1.2s ease-out forwards; }
+
+  /* 3D */
+  .perspective-1000{ perspective: 1000px; perspective-origin:center; }
+  #features-img{
+    transform-style: preserve-3d;
+    will-change: transform;
+    cursor: grab;
+    user-select:none;
+    -webkit-user-drag:none;
+    touch-action:none; /* important for mobile drag */
+  }
+  #dynamic-shadow{ pointer-events:none; will-change: transform; }
+
+  /* Mobile tweaks */
+  @media (max-width: 768px){
+    #hero-img, #second-img{ width:180px; }
+
+    /* keep the fixed hero product visually centered on small screens */
+    #hero-img{
+      top: 12%;
+      max-width: 70vw;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    #hero-img, #second-img, .parallax, #hero-overlay{ transition: none !important; }
+  }
 </style>
 </head>
+
 <body>
 
-<!-- Cinematic Overlay -->
-<div id="hero-overlay" class="absolute inset-0 bg-black/30 z-10"></div>
+<!-- Fixed cinematic overlay -->
+<div id="hero-overlay"></div>
 
-<!-- Hero Section with Background Image -->
-<section class="relative flex flex-col md:flex-row items-start md:items-start px-6 md:px-12 py-16 min-h-screen overflow-hidden
-                bg-gray-50 bg-cover bg-center"
-         style="background-image: url('image/s-l1200.jpg');">
-  
-  <!-- Cinematic Overlay -->
-  <div class="absolute inset-0 bg-black/30 z-10"></div> <!-- Dark overlay for readability -->
+<!-- HERO -->
+<section class="relative flex flex-col md:flex-row items-start px-6 md:px-12 py-16 min-h-screen overflow-hidden
+               bg-gray-50 bg-cover bg-center"
+  style="background-image:url('image/s-l1200.jpg');">
 
-  <!-- Left Side: Brand Name & Product Benefits -->
-  <div class="flex-1 z-20 max-w-3xl space-y-12 md:space-y-16 text-white"> <!-- text-white for contrast -->
-    
-    <!-- Brand Name -->
+  <!-- readability overlay (section-only) -->
+  <div class="absolute inset-0 bg-black/35 z-10"></div>
+
+  <!-- Left -->
+  <div class="flex-1 z-20 max-w-3xl space-y-12 md:space-y-16 text-white">
     <h1 class="text-5xl md:text-7xl font-extrabold uppercase tracking-widest
                bg-gradient-to-r from-blue-300 via-blue-100 to-blue-300 bg-clip-text text-transparent
                drop-shadow-lg animate-fadeIn">
       NIVEA MEN
     </h1>
 
-    <!-- Product Benefits -->
     <div class="space-y-6">
       <p class="text-2xl md:text-3xl font-semibold drop-shadow-md">
         Keep your skin fresh and soft all day
       </p>
-      
       <p class="text-lg drop-shadow-sm">
         Specially designed for men’s skin, moisturizing & protecting for daily use.
       </p>
-      
-      <!-- Features -->
+
       <div class="flex flex-wrap gap-4 mt-4">
-        <div class="flex items-center space-x-2 bg-black/30 px-4 py-2 rounded-xl shadow-sm">
-          <span class="text-blue-400 text-xl">💧</span>
-          <span class="font-medium">Deep Moisturization</span>
+        <div class="flex items-center space-x-2 bg-black/35 px-4 py-2 rounded-xl shadow-sm">
+          <span class="text-blue-300 text-xl">💧</span><span class="font-medium">Deep Moisturization</span>
         </div>
-        <div class="flex items-center space-x-2 bg-black/30 px-4 py-2 rounded-xl shadow-sm">
-          <span class="text-green-400 text-xl">🌿</span>
-          <span class="font-medium">Natural Extracts</span>
+        <div class="flex items-center space-x-2 bg-black/35 px-4 py-2 rounded-xl shadow-sm">
+          <span class="text-green-300 text-xl">🌿</span><span class="font-medium">Natural Extracts</span>
         </div>
-        <div class="flex items-center space-x-2 bg-black/30 px-4 py-2 rounded-xl shadow-sm">
-          <span class="text-yellow-300 text-xl">🛡️</span>
-          <span class="font-medium">Protects from Irritation</span>
+        <div class="flex items-center space-x-2 bg-black/35 px-4 py-2 rounded-xl shadow-sm">
+          <span class="text-yellow-200 text-xl">🛡️</span><span class="font-medium">Protects from Irritation</span>
         </div>
-        <div class="flex items-center space-x-2 bg-black/30 px-4 py-2 rounded-xl shadow-sm">
-          <span class="text-purple-400 text-xl">⚡</span>
-          <span class="font-medium">Fast Absorbing</span>
+        <div class="flex items-center space-x-2 bg-black/35 px-4 py-2 rounded-xl shadow-sm">
+          <span class="text-purple-300 text-xl">⚡</span><span class="font-medium">Fast Absorbing</span>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- Right Side: Extra Info + Price + Order Button + Product Image -->
-  <div class="flex-1 z-20 mt-24 md:mt-32 flex flex-col items-end max-w-md space-y-8 text-white">
-    
-    <!-- Extra Info -->
+  <!-- Right -->
+  <div class="flex-1 z-20 mt-16 md:mt-28 flex flex-col items-end max-w-md space-y-8 text-white">
     <div class="space-y-1 text-right">
       <p>✅ Dermatologically Tested</p>
       <p>✅ Suitable for All Skin Types</p>
       <p>✅ Non-Greasy & Lightweight</p>
     </div>
 
-    <!-- Price -->
-    <p class="text-3xl md:text-4xl font-bold text-green-300 text-right drop-shadow-md">
+    <p class="text-3xl md:text-4xl font-bold text-green-200 text-right drop-shadow-md">
       Only $12.99
     </p>
 
-    <!-- Order Button -->
-    <a href="checkout.html" class="inline-block mt-2 bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-xl text-lg font-medium shadow-lg transition-transform transform hover:scale-105">
+    <a href="checkout.html"
+       class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-xl text-lg font-medium shadow-lg btn-hover">
       Order Now
     </a>
 
-    <!-- Hero Product Image -->
-    <img id="hero-img" src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png" class="mt-6 max-h-[700px] md:max-h-[800px]">
-    
+    <!-- NOTE: hero-img is fixed, so keep it outside normal flow visually -->
+    <img id="hero-img"
+         src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png"
+         alt="NIVEA MEN Cream" />
   </div>
-
 </section>
 
+<!-- ABOUT / ORDER -->
+<section id="about-section" class="relative px-6 md:px-12 py-24 bg-gray-50 bg-cover bg-center"
+  style="
+    background-image:url('https://png.pngtree.com/background/20250102/original/pngtree-new-high-resolution-natural-studio-background-photo-picture-image_15760483.jpg');
+    background-size:cover;background-position:center;background-repeat:no-repeat;">
+  <div class="absolute inset-0 bg-black/25 z-10"></div>
 
+  <div class="relative z-20 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-white min-h-[100vh] items-center">
 
-<!-- Second Section  -->
-<!-- Second Section -->
-<section id="order" class="relative px-6 md:px-12 py-24 bg-gray-50 bg-cover bg-center"
-style="
-           background-image: url('https://png.pngtree.com/background/20250102/original/pngtree-new-high-resolution-natural-studio-background-photo-picture-image_15760483.jpg');
-           background-size: cover;
-           background-position: center;
-           background-repeat: no-repeat;
-         ">  
-
-  <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/20 z-10"></div>
-
-  <div class="relative z-20 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-white">
-    
-    <!-- Left Side: Product Details -->
-    <div class="space-y-6  p-8 rounded-2xl ">
+    <div class="space-y-6 p-8 rounded-2xl bg-black/15 backdrop-blur-[2px] border border-white/10">
       <h2 class="text-3xl md:text-4xl font-bold text-blue-200">About NIVEA MEN Cream</h2>
       <p class="text-lg leading-relaxed">
-        NIVEA MEN Cream is carefully formulated with natural extracts 🌿, 
-        Vitamin E, and advanced hydration technology 💧 to provide long-lasting 
+        NIVEA MEN Cream is carefully formulated with natural extracts 🌿,
+        Vitamin E, and advanced hydration technology 💧 to provide long-lasting
         freshness and smooth skin.
       </p>
       <ul class="list-disc list-inside space-y-2 text-base">
@@ -212,110 +212,64 @@ style="
       </ul>
     </div>
 
-  <!-- Middle: Product Image with 3D Effect -->
-<div class="flex justify-center items-center relative perspective-1000">
+    <!-- Middle image -->
+    <div class="flex justify-center items-center relative perspective-1000 min-h-[420px]">
+      <img id="second-img"
+        src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png"
+        class="max-h-[450px] drop-shadow-2xl relative z-20"
+        alt="NIVEA MEN Cream (Alt view)" />
 
-  <!-- Main Product Image -->
-  <img id="second-img" 
-       src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png" 
-       class="max-h-[450px] drop-shadow-2xl transition-transform duration-500 relative z-20"
-       style="transform: translateZ(30px) rotateX(5deg) rotateY(0deg);">
-
-  <!-- Secondary Image (Wood) -->
-  <img src="image/wood.png"
-       class="max-h-[150px] drop-shadow-lg transition-all duration-500 absolute bottom-0 left-1/2 transform -translate-x-1/2 z-10"
-       style="mix-blend-mode: multiply;">
-
-</div>
-
-<style>
-/* Add perspective to container for 3D feel */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-/* Optional: subtle hover effect for more 3D */
-#second-img:hover {
-  transform: translateZ(40px) rotateX(7deg) rotateY(2deg);
-}
-</style>
-
-
-
-
-
-
-
-    <!-- Right Side: Checkout Option Updated -->
-<div class="space-y-6 p-8 rounded-2xl flex flex-col justify-center">
-  
-  <!-- Title -->
-  <h2 class="text-3xl font-bold text-gray-100 relative z-10 parallax" id="order-title">
-    Ready to Get Yours?
-  </h2>
-
-  <!-- Description -->
-  <p class="mt-4 text-gray-100 text-left max-w-full relative z-10 parallax" id="order-desc">
-    Moisturize and protect your skin all day long. Order now and get doorstep delivery.
-  </p>
-
-  <!-- Price -->
-  <p class="text-3xl font-bold text-green-300 mt-2 relative z-10 parallax">$12.99</p>
-
-  <!-- Order Button -->
-  <a href="checkout.html" 
-     class="mt-4 bg-green-600 text-white px-6 py-3 rounded-xl btn-hover relative z-10 parallax text-center">
-    Proceed to Checkout
-  </a>
-
-</div>
-
-  </div>
-
-</section>
-
-
-
-
-
-
-<!-- New Section: 70/30 Layout with 3D + Wood Base + Dynamic Shadow -->
-<section id="order" class="relative px-6 md:px-12 py-24 bg-gray-50 bg-cover bg-center"
-style="
-           background-image: url('https://static.vecteezy.com/system/resources/previews/053/826/756/non_2x/a-dark-room-with-a-wall-and-a-tree-in-the-background-free-photo.jpg');
-           background-size: cover;
-           background-position: center;
-           background-repeat: no-repeat;
-         "> 
-
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
-
-    <!-- Left Container: Interactive 3D Image (70%) -->
-    <div class="md:w-8/12 w-full perspective-1000 relative flex justify-center items-end">
-      
-      <!-- Wood Base Image -->
-      <img src="image/wood 2.png" 
-     alt="Wood Base"
-     class="absolute bottom-0 w-96 md:w-[28rem] max-w-full z-0 drop-shadow-lg"
-     style="mix-blend-mode: multiply;">
-
-      <!-- Dynamic Shadow -->
-      <div id="dynamic-shadow" 
-           class="absolute bottom-0 w-48 h-12 bg-black/20 rounded-full blur-xl z-5"
-           style="transform-origin: center; transition: all 0.1s;"></div>
-
-      <!-- Main Product Image -->
-      <img id="features-img" 
-           src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png"
-           alt="Nivea Product"
-           class="w-full max-w-sm rounded-2xl  transition-transform duration-50 ease-out relative z-10 cursor-grab">
+      <img src="image/wood.png"
+        class="max-h-[150px] drop-shadow-lg absolute bottom-6 left-1/2 -translate-x-1/2 z-10"
+        style="mix-blend-mode:multiply;"
+        alt="Wood base" />
     </div>
 
-    <!-- Right Container: Text/Other Content (30%) -->
+    <div class="space-y-6 p-8 rounded-2xl bg-black/15 backdrop-blur-[2px] border border-white/10 flex flex-col justify-center">
+      <h2 class="text-3xl font-bold text-gray-100 parallax" id="order-title">
+        Ready to Get Yours?
+      </h2>
+      <p class="mt-4 text-gray-100 text-left max-w-full parallax" id="order-desc">
+        Moisturize and protect your skin all day long. Order now and get doorstep delivery.
+      </p>
+      <p class="text-3xl font-bold text-green-200 mt-2 parallax">$12.99</p>
+      <a href="checkout.html" class="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl btn-hover parallax text-center">
+        Proceed to Checkout
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES (70/30) -->
+<section id="features-section" class="relative px-6 md:px-12 py-24 bg-gray-50 bg-cover bg-center"
+  style="
+    background-image:url('https://static.vecteezy.com/system/resources/previews/053/826/756/non_2x/a-dark-room-with-a-wall-and-a-tree-in-the-background-free-photo.jpg');
+    background-size:cover;background-position:center;background-repeat:no-repeat;">
+  <div class="absolute inset-0 bg-black/25"></div>
+
+  <div class="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+
+    <div class="md:w-8/12 w-full perspective-1000 relative flex justify-center items-end min-h-[520px]">
+      <img src="image/wood 2.png"
+        alt="Wood Base"
+        class="absolute bottom-2 w-96 md:w-[28rem] max-w-full z-0 drop-shadow-lg"
+        style="mix-blend-mode:multiply;" />
+
+      <div id="dynamic-shadow"
+        class="absolute bottom-8 w-56 h-14 bg-black/25 rounded-full blur-xl z-[1]"
+        style="transform-origin:center;"></div>
+
+      <img id="features-img"
+        src="https://img.nivea.com/-/media/miscellaneous/media-center-items/5/8/6/223103-web_1010x1180_transparent_png.png"
+        alt="Nivea Product"
+        class="w-full max-w-sm rounded-2xl relative z-[2]" />
+    </div>
+
     <div class="md:w-4/12 w-full flex flex-col justify-center space-y-6">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-100">Why Choose NIVEA MEN?</h2>
       <p class="text-lg text-gray-100">
-        Experience the ultimate skin care solution with deep moisturization, 
+        Experience the ultimate skin care solution with deep moisturization,
         natural extracts, and long-lasting freshness for all-day protection.
       </p>
       <ul class="list-disc list-inside text-gray-100 space-y-2">
@@ -324,8 +278,7 @@ style="
         <li>Dermatologically tested</li>
         <li>Suitable for all skin types</li>
       </ul>
-      <a href="checkout.html" 
-         class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl btn-hover w-max">
+      <a href="checkout.html" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl btn-hover w-max">
         Order Now
       </a>
     </div>
@@ -333,130 +286,190 @@ style="
   </div>
 </section>
 
-<style>
-.perspective-1000 {
-  perspective: 1000px;
-  perspective-origin: center;
-}
-
-#features-img {
-  transform-style: preserve-3d;
-  will-change: transform;
-  cursor: grab;
-}
-
-#dynamic-shadow {
-  pointer-events: none;
-}
-</style>
-
 <script>
-const featuresImg = document.getElementById('features-img');
-const container = featuresImg.parentElement;
-const dynamicShadow = document.getElementById('dynamic-shadow');
-let isDragging = false;
-let startX, startY;
-let currentRotX = 0;
-let currentRotY = 0;
+/* =========================
+   1) SMOOTH CINEMATIC PARALLAX
+   - No infinite heavy loop.
+   - Only animates smoothly toward targets.
+========================= */
+(() => {
+  const heroImg = document.getElementById("hero-img");
+  const aboutSection = document.getElementById("about-section");
+  const secondImg = document.getElementById("second-img");
+  const overlay = document.getElementById("hero-overlay");
+  const parallaxElems = document.querySelectorAll(".parallax");
 
-const rotationLimit = 45; // degrees
+  // state
+  let rafId = null;
+  let needsTick = true;
 
-// Drag start
-featuresImg.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  startX = e.clientX;
-  startY = e.clientY;
-  featuresImg.style.cursor = 'grabbing';
-});
+  let current = { y: window.innerHeight * 0.15, s: 1, opHero: 1, opSecond: 0, vignette: 0, textY: 0, sh: 0 };
+  let target  = { y: current.y, s: 1, opHero: 1, opSecond: 0, vignette: 0, textY: 0, sh: 0 };
 
-// Drag end
-document.addEventListener('mouseup', () => {
-  isDragging = false;
-  featuresImg.style.cursor = 'grab';
-});
+  const lerp = (a,b,t) => a + (b-a) * t;
 
-// Dragging
-document.addEventListener('mousemove', (e) => {
-  if(!isDragging) return;
+  function computeTargets(){
+    const rect = aboutSection.getBoundingClientRect();
+    const vh = window.innerHeight;
 
-  const deltaX = e.clientX - startX;
-  const deltaY = e.clientY - startY;
+    // progress: 0 when section is far below, 1 when section is centered/entered
+    const raw = (vh - rect.top) / vh;
+    const p = Math.min(Math.max(raw, 0), 1);
 
-  startX = e.clientX;
-  startY = e.clientY;
+    // positions
+    const startTop = vh * 0.15;
+    const endTop = vh * 0.50 - (heroImg.offsetHeight * 0.5);
+    target.y = startTop + (endTop - startTop) * p;
 
-  currentRotY += deltaX * 0.3;
-  currentRotX -= deltaY * 0.3;
+    // scale
+    const endScale = 0.95;
+    target.s = 1 - (1 - endScale) * p;
 
-  // Clamp rotation
-  currentRotX = Math.max(Math.min(currentRotX, rotationLimit), -rotationLimit);
-  currentRotY = Math.max(Math.min(currentRotY, rotationLimit), -rotationLimit);
+    // fade swap
+    target.opHero = 1 - p;
+    target.opSecond = p;
 
-  featuresImg.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg) scale(1.02)`;
+    // vignette overlay
+    target.vignette = p * parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--vignetteMax"));
 
-  // Dynamic shadow moves opposite to rotation
-  const shadowOffsetX = -currentRotY * 1.5; // multiplier for sensitivity
-  const shadowOffsetY = currentRotX * 1.5;
-  dynamicShadow.style.transform = `translate(${shadowOffsetX}px, ${shadowOffsetY}px) scale(${1 - Math.abs(currentRotX)/150})`;
-});
-</script>
+    // text parallax slight
+    target.textY = p * 22;
+
+    // shadow intensity
+    target.sh = p;
+  }
+
+  function tick(){
+    rafId = null;
+
+    const ease = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ease")) || 0.10;
+
+    // smooth toward target
+    current.y       = lerp(current.y, target.y, ease);
+    current.s       = lerp(current.s, target.s, ease);
+    current.opHero  = lerp(current.opHero, target.opHero, ease);
+    current.opSecond= lerp(current.opSecond, target.opSecond, ease);
+    current.vignette= lerp(current.vignette, target.vignette, ease);
+    current.textY   = lerp(current.textY, target.textY, ease);
+    current.sh      = lerp(current.sh, target.sh, ease);
+
+    // apply
+    heroImg.style.transform =
+      `translateX(-50%) translateY(${current.y}px) scale(${current.s})`;
+
+    const shadowMax = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--shadowMax")) || 0.28;
+    heroImg.style.filter =
+      `drop-shadow(0 ${12 + 26*current.sh}px ${26 + 46*current.sh}px rgba(0,0,0,${shadowMax*current.sh}))`;
+
+    heroImg.style.opacity = current.opHero.toFixed(3);
+
+    secondImg.style.opacity = current.opSecond.toFixed(3);
+    secondImg.style.transform = `translate(-50%, -50%) scale(${0.96 + 0.06*current.opSecond})`;
+
+    overlay.style.opacity = current.vignette.toFixed(3);
+
+    parallaxElems.forEach(el => {
+      el.style.transform = `translateY(${current.textY}px)`;
+    });
+
+    // stop when close enough (saves CPU)
+    const closeEnough =
+      Math.abs(current.y - target.y) < 0.15 &&
+      Math.abs(current.s - target.s) < 0.002 &&
+      Math.abs(current.opHero - target.opHero) < 0.01 &&
+      Math.abs(current.opSecond - target.opSecond) < 0.01 &&
+      Math.abs(current.vignette - target.vignette) < 0.01;
+
+    if (!closeEnough && needsTick) {
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  function requestTick(){
+    needsTick = true;
+    computeTargets();
+    if (!rafId) rafId = requestAnimationFrame(tick);
+  }
+
+  // run
+  requestTick();
+  window.addEventListener("scroll", requestTick, { passive: true });
+  window.addEventListener("resize", requestTick);
+})();
 
 
+/* =========================
+   2) 3D DRAG (Mouse + Touch)
+   - Uses Pointer Events (smooth + mobile friendly)
+========================= */
+(() => {
+  const img = document.getElementById("features-img");
+  const shadow = document.getElementById("dynamic-shadow");
+  if(!img || !shadow) return;
 
+  let isDown = false;
+  let lastX = 0, lastY = 0;
+  let rotX = 0, rotY = 0;
 
+  // smoother motion
+  let tRotX = 0, tRotY = 0;
+  const limit = 40;
 
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
+  function apply(){
+    // ease toward target rotation
+    rotX += (tRotX - rotX) * 0.12;
+    rotY += (tRotY - rotY) * 0.12;
 
+    img.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
 
+    const shadowOffsetX = -rotY * 1.6;
+    const shadowOffsetY =  rotX * 1.6;
+    const scale = 1 - Math.min(Math.abs(rotX), 50)/170;
 
+    shadow.style.transform = `translate(${shadowOffsetX}px, ${shadowOffsetY}px) scale(${scale})`;
 
+    requestAnimationFrame(apply);
+  }
+  apply();
 
-
-<script>
-const heroImg = document.getElementById('hero-img');
-const orderSection = document.getElementById('order');
-const secondImg = document.getElementById('second-img');
-const overlay = document.getElementById('hero-overlay');
-const parallaxElems = document.querySelectorAll('.parallax');
-
-let currentY = window.innerHeight * 0.15;
-let currentScale = 1;
-
-function lerp(a,b,t){return a+(b-a)*t;}
-
-function animateParallax(){
-  const orderRect = orderSection.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-
-  let progress = Math.min(Math.max((windowHeight - orderRect.top)/windowHeight,0),1);
-
-  const startTop = windowHeight*0.15;
-  const targetTop = windowHeight/2 - heroImg.offsetHeight/2;
-  currentY = lerp(currentY, startTop + (targetTop - startTop)*progress,0.1);
-
-  const targetScale = 0.95;
-  currentScale = lerp(currentScale,1-(1-targetScale)*progress,0.1);
-
-  heroImg.style.transform = `translateX(-50%) translateY(${currentY}px) scale(${currentScale})`;
-  heroImg.style.boxShadow = `0 ${20*progress}px ${40*progress}px rgba(0,0,0,${0.2*progress})`;
-  heroImg.style.opacity = 1-progress;
-
-  secondImg.style.opacity = progress;
-  secondImg.style.transform = `translate(-50%, -50%) scale(${0.95 + 0.05*progress})`;
-
-  // Overlay fade for cinematic feel
-  overlay.style.opacity = progress * 0.7;
-
-  parallaxElems.forEach(el=>{
-    el.style.transform = `translateY(${progress*20}px)`;
+  img.addEventListener("pointerdown", (e) => {
+    isDown = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    img.setPointerCapture(e.pointerId);
+    img.style.cursor = "grabbing";
   });
 
-  requestAnimationFrame(animateParallax);
-}
+  img.addEventListener("pointerup", () => {
+    isDown = false;
+    img.style.cursor = "grab";
+  });
 
-animateParallax();
+  img.addEventListener("pointercancel", () => {
+    isDown = false;
+    img.style.cursor = "grab";
+  });
+
+  img.addEventListener("pointermove", (e) => {
+    if(!isDown) return;
+
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+    tRotY = clamp(tRotY + dx * 0.30, -limit, limit);
+    tRotX = clamp(tRotX - dy * 0.30, -limit, limit);
+  });
+
+  // Double click / double tap to reset
+  img.addEventListener("dblclick", () => {
+    tRotX = 0; tRotY = 0;
+  });
+})();
 </script>
 
 </body>
 </html>
-
